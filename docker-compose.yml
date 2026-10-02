@@ -38,6 +38,7 @@ services:
       - "8000:8000" 
     volumes:
       - ./backend:/var/www #Bind mount - live code sync
+      - /var/www/vendor #Preserve vendor from bind mount override
     environment:
       DB_CONNECTION: pgsql
       DB_HOST: postgres

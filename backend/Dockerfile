@@ -22,9 +22,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 #4. Set the working directory inside the container
 WORKDIR /var/www
 
-# 5.Expose port 8000 for artisan serve
+#5. Copy composer files and install dependencies
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader
+
+#6. Copy the rest of the application
+COPY . .
+RUN composer dump-autoload --optimize
+
+# 7.Expose port 8000 for artisan serve
 EXPOSE 8000
 
-#6. Default comman to run Laravel's development server
+#8. Default command to run Laravel's development server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
 
